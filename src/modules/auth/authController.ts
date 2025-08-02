@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import prisma from "../../prisma/client";
+import prisma from "../../prismaClient/client";
 import { comparePassword, hashPassword } from "../../utils/passwordCheck";
 import { generateToken } from "../../utils/jwt";
 

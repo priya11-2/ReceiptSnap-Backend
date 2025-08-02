@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import fs from "fs";
 import path from "path";
-import prisma from "../../prisma/client";
+import prisma from "../../prismaClient/client";
 
 
 interface AuthRequest extends Request {
