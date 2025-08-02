@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "prisma generate && nodemon",
+    "dev": "nodemon",
     "generate": "prisma generate",
     "build": "tsc -b",
     "start": "node dist/index.js"
@@ -29,7 +29,7 @@
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
-    "multer": "^1.4.5-lts.2", 
+    "multer": "^1.4.5-lts.2",
     "nanoid": "^5.1.5",
     "nodemon": "^3.1.9",
     "prisma": "^6.6.0",
