@@ -40,4 +40,4 @@ jobs:
           context: .
           file: Dockerfile
           push: true
-          tags: pratik05/receiptsnap-backend:${{ github.sha }}
+          tags: pratik50/receiptsnap-backend:${{ github.sha }}
