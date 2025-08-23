@@ -38,5 +38,6 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
+          file: ./docker/Dockerfile.backend
           push: true
           tags: pratik05/receiptsnap-backend:${{ github.sha }}
