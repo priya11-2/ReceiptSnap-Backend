@@ -43,6 +43,5 @@ jobs:
           tags: pratik50/receiptsnap-backend:${{ github.sha }}
       - run: |
           echo "${{ secrets.SSH_PRIVATE_KEY }}" &> ~/ssh_key
-          mkdir -p /home/ubuntu/.ssh
           chmod 700 /home/ubuntu/ssh_key
           ssh -o StrictHostKeyChecking=no -i ~/ssh_key ubuntu@13.232.100.125 -t "sudo docker stop user_backend && sudo docker run --name user_backend -d -p 8080:8080 100xdevs/user-app-backend:${{ github.sha }}"
