@@ -40,4 +40,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: pratik05/receiptsnap-backend:latest
+          tags: pratik05/receiptsnap-backend
