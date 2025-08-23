@@ -15,7 +15,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # 2️⃣ Set up Docker Buildx
+      # 2️⃣ Set up Docker Buildx for advanced builds
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
@@ -41,4 +41,3 @@ jobs:
           context: .
           push: true
           tags: pratik05/receiptsnap-backend:latest
-
