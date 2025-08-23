@@ -1,4 +1,4 @@
-name: Deploy to EC2
+name: Deploy to EC2 with Docker
 
 on:
   push:
@@ -6,24 +6,43 @@ on:
       - main
 
 jobs:
-  deploy:
+  build-and-deploy:              # <<-- job ID tumhare diagram ke liye
+    name: Build & Deploy to EC2  # (UI me dikhega)
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Deploy to EC2
-      uses: appleboy/ssh-action@v0.1.10
-      with:
-        host: ${{ secrets.EC2_HOST }}
-        username: ${{ secrets.EC2_USER }}
-        key: ${{ secrets.EC2_KEY }}
-        script: |
-          cd /var/www/receiptsnap-backend
-          git reset --hard
-          git pull origin main
-          npm install
-          npm run build
-          pm2 restart receiptsnap || pm2 start "npm start" --name receiptsnap
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: Build and Push Docker Image
+        run: |
+          IMAGE=${{ secrets.DOCKER_USERNAME }}/receiptsnap-backend:latest
+          docker build -t $IMAGE .
+          docker push $IMAGE
+
+      - name: Deploy on EC2
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_KEY }}
+          script: |
+            set -e
+            IMAGE=${{ secrets.DOCKER_USERNAME }}/receiptsnap-backend:latest
+            sudo apt-get update && sudo apt-get install -y docker.io
+            sudo systemctl enable docker
+            sudo systemctl start docker
+            sudo docker pull $IMAGE
+            sudo docker stop receiptsnap-backend || true
+            sudo docker rm receiptsnap-backend || true
+            sudo docker run -d --name receiptsnap-backend \
+              --restart unless-stopped \
+              -p 3000:3000 \
+              --env-file /var/www/receiptsnap-backend/.env \
+              $IMAGE
