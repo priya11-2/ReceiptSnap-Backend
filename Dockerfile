@@ -5,7 +5,7 @@ WORKDIR /app
 # Copying dependencies & env & schema
 COPY package*.json ./
 COPY prisma ./prisma
-COPY .env .env
+#COPY .env .env
 
 # Install dependencies
 RUN npm install
