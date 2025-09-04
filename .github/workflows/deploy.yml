@@ -42,6 +42,10 @@ jobs:
           push: true
           tags: pratik50/receiptsnap-backend:${{ github.sha }}
       - run: |
-          sudo echo "${{ secrets.SSH_PRIVATE_KEY }}" &> ~/ssh_key
-          sudo chmod 700 ~/ssh_key
-          sudo ssh -o StrictHostKeyChecking=no -i ~/ssh_key ubuntu@13.235.239.130 -t "sudo docker stop user_backend && sudo docker run --name user_backend -d -p 8080:8080 pratik50/receiptsnap-backend:${{ github.sha }}"
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/ssh_key
+          chmod 600 ~/ssh_key
+          ssh -o StrictHostKeyChecking=no -i ~/ssh_key ubuntu@13.235.239.130 << 'EOF'
+            sudo docker pull pratik50/receiptsnap-backend:${{ github.sha }}
+            sudo docker rm -f user_backend || true
+            sudo docker run --name user_backend -d -p 8080:8080 pratik50/receiptsnap-backend:${{ github.sha }}
+          EOF
