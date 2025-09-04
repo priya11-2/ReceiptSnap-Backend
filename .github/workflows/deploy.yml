@@ -44,4 +44,4 @@ jobs:
       - run: |
           sudo echo "${{ secrets.SSH_PRIVATE_KEY }}" &> ~/ssh_key
           sudo chmod 700 ~/ssh_key
-          sudo ssh -o StrictHostKeyChecking=no -i ~/ssh_key ubuntu@13.235.239.130 -t "sudo docker stop user_backend && sudo docker run --name user_backend -d -p 8080:8080 100xdevs/user-app-backend:${{ github.sha }}"
+          sudo ssh -o StrictHostKeyChecking=no -i ~/ssh_key ubuntu@13.235.239.130 -t "sudo docker stop user_backend && sudo docker run --name user_backend -d -p 8080:8080 pratik50/receiptsnap-backend:${{ github.sha }}"
